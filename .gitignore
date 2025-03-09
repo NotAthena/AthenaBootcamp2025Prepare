@@ -81,3 +81,6 @@ crashlytics-build.properties
 
 # User Settings
 **/[Uu]ser[Ss]ettings/
+
+# Spaghetti
+**/[Ss]paghetti/
