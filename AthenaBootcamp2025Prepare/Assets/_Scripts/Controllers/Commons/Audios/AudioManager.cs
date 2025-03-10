@@ -7,9 +7,13 @@ public class AudioManager : MonoBehaviour
 {
 
     private static AudioManager instance;
+
+    [Header("Data")]
     [SerializeField] private List<AudioClip> audioClipList = new();
+
+    [Header("Runtime Parameter")]
     [SerializeField] private List<AudioSource> audioSourceList = new();
-    [SerializeField] private List<string> audioNameList = new();
+    private List<string> audioNameList = new();
 
     public static AudioManager Instance { get => instance; }
 
