@@ -1,4 +1,4 @@
-public static class SampleConstants
+public static class ObserverConstants
 {
     public static readonly string DEFAULT = "DEFAULT";
 }

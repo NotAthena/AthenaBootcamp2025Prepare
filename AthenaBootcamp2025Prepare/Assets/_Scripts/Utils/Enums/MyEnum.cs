@@ -1,4 +1,5 @@
-public enum SampleEnum
+public enum SampleState
 {
     Default,
 }
+

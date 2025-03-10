@@ -1,9 +1,10 @@
-
+﻿using System;
 using UnityEngine;
 
-
-[CreateAssetMenu(fileName = "Sample", menuName = "ScriptableObjects/Sample", order = 0)]
-public class SampleModel : ScriptableObject, ICloneable<SampleModel>
+[Serializable]
+public class SampleModel : ICloneable<SampleModel>
 {
-    public string SampleData = "DEFAULT";
+    [SerializeField]private string sampleData = "DEFAULT";
+
+    public string SampleData { get => sampleData; set => sampleData = value; }
 }

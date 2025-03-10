@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -41,9 +42,9 @@ public class AudioManager : MonoBehaviour
         {
             if (i < audioSourceList.Count)
             {
-                Debug.Log(i);
-                Debug.Log(audioClipList[i]);
-                Debug.Log(audioSourceList[i]);
+                //Debug.Log(i);
+                //Debug.Log(audioClipList[i]);
+                //Debug.Log(audioSourceList[i]);
                 audioSourceList[i].clip = audioClipList[i];
                 audioNameList.Add(audioClipList[i].name);
             }
@@ -61,10 +62,23 @@ public class AudioManager : MonoBehaviour
     {
         try
         {
-            //TO DO: Write function to ensure audio is ready before playing
-            audioSourceList[audioNameList.IndexOf(audioName)].Play();
+            StopAllCoroutines();
+            var audioSource = audioSourceList[audioNameList.IndexOf(audioName)];
+            if (audioSource.clip.loadState == AudioDataLoadState.Loaded)
+            {
+                audioSourceList[audioNameList.IndexOf(audioName)].Play();
+            }
+            else
+            {
+                StartCoroutine(PlayAudioCoroutine(audioSource));
+            }
         }
         catch { }
+    }
+
+    IEnumerator PlayAudioCoroutine(AudioSource audioSource)
+    {
+        yield return new WaitUntil(() => audioSource.clip.loadState == AudioDataLoadState.Loaded);
     }
 
     public void StopAudio(string audioName)
@@ -75,5 +89,7 @@ public class AudioManager : MonoBehaviour
         }
         catch { }
     }
+
+
 
 }
