@@ -44,7 +44,7 @@ public class SampleGameElementController : MonoBehaviour
         switch (currentState)
         {
             case SampleState.Default:
-                EnterState_Default();
+                ExitState_Default();
                 break;
         }
 
