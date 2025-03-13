@@ -18,6 +18,8 @@ public class SampleGameElementController : MonoBehaviour
     {
         //Register Observer
         ObserverHelper.RegisterListener(ObserverConstants.DEFAULT, (param) => { SampleBehavior((int)param[0], (string)param[1]); });
+
+        //Notify Observer: Use somewhere else
         ObserverHelper.Notify(ObserverConstants.DEFAULT, new[] { "1", "Hello" });
     }
 
