@@ -46,3 +46,9 @@ public enum Direction
     Left,
     Right
 }
+
+public enum ReplayState
+{
+    Playing,
+    Pausing
+}

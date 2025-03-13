@@ -43,12 +43,16 @@ public class Turn : ICloneable<Turn>
         {
             matrix[wallCoord.X, wallCoord.Y] = wallSign;
         }
-
-        for (int i = 1; i < snakeCoords.Count; i++)
+        
+        if (snakeCoords.Count > 0)
         {
-            matrix[snakeCoords[i].X, snakeCoords[i].Y] = snakeBodySign;
+            for (int i = 1; i < snakeCoords.Count; i++)
+            {
+                matrix[snakeCoords[i].X, snakeCoords[i].Y] = snakeBodySign;
+            }
+            matrix[snakeCoords[0].X, snakeCoords[0].Y] = snakeHeadSign;
         }
-        matrix[snakeCoords[0].X, snakeCoords[0].Y] = snakeHeadSign;
+
 
         if (Food != null) matrix[Food.Coordinate.X, Food.Coordinate.Y] = foodSign;
         return matrix;
@@ -108,6 +112,8 @@ public class Turn : ICloneable<Turn>
     public Food GenerateFood()
     {
         GenerateMatrix();
+        if (levelInfo.FoodSOs.Count == 0) return null;
+
         List<Coordinate> availableCoords = new();
         for (int i = 0; i < matrix.GetLength(0); i++) // Rows
         {
@@ -131,13 +137,6 @@ public class Turn : ICloneable<Turn>
         }
         Food.Coordinate = availableCoords[foodCoord];
 
-        //int foodSize = 0;
-        //if (turnIndex > 0 && turnIndex % 5 == 0) { foodSize = 2; }
-        //Food = new()
-        //{
-        //    Size = (FoodSize)foodSize,
-        //    Coordinate = availableCoords[foodCoord],
-        //};
         GenerateMatrix();
         return Food;
     }

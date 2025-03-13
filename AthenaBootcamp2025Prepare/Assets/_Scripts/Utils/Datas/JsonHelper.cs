@@ -1,6 +1,8 @@
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 
 
 public class JsonHelper
@@ -25,6 +27,26 @@ public class JsonHelper
     public static void SaveData(Object saveObject, string filePath)
     {
         string json = JsonConvert.SerializeObject(saveObject, Formatting.Indented);
-        System.IO.File.WriteAllText(filePath, json);
+
+        string extension = Path.GetExtension(filePath);
+        if (string.IsNullOrEmpty(extension))
+        {
+            filePath += ".txt";
+        }
+
+        string dirPath = Path.GetDirectoryName(filePath);
+        if (!Directory.Exists(dirPath))
+        {
+            Directory.CreateDirectory(dirPath);
+        }
+        else
+        {
+            File.WriteAllText(filePath, string.Empty);
+        }
+
+        using (StreamWriter sw = (File.Exists(filePath)) ? File.AppendText(filePath) : File.CreateText(filePath))
+        {
+            sw.WriteLine(json);
+        }
     }
 }

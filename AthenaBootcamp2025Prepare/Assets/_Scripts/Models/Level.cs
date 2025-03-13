@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,12 +10,12 @@ public class Level : ICloneable<Level>
     [SerializeField] Difficulty difficulty;
     [SerializeField] int width;
     [SerializeField] int height;
-    [SerializeField] List<Coordinate> snakeStartCoords;
+    [SerializeField] List<Coordinate> snakeStartCoords = new();
     [SerializeField] Direction snakeStartDirection;
     [Description("Turn per second. \n Ex: if snakeSpeed equal 2, delta time between every turn is 0.5 second")]
     [SerializeField] float snakeSpeed;
-    [SerializeField] List<Coordinate> wallCoords;
-    [SerializeField] List<FoodSO> foodSOs;
+    [SerializeField] List<Coordinate> wallCoords = new();
+    [SerializeField][JsonIgnore] List<FoodSO> foodSOs = new();
 
     public Difficulty Difficulty { get => difficulty; set => difficulty = value; }
     public int Width { get => width; set => width = value; }
@@ -25,18 +26,6 @@ public class Level : ICloneable<Level>
     public List<Coordinate> WallCoords { get => wallCoords; set => wallCoords = value; }
     public List<FoodSO> FoodSOs { get => foodSOs; set => foodSOs = value; }
 
-    //public Food GetFood(int index)
-    //{
-    //    if (index >= foodSOs.Count) index = foodSOs.Count - 1;
-    //    return ((ICloneable<Food>)foodSOs[index].Food).CloneSelf();
-    //}
-
-    //public Food GetRandomFood()
-    //{
-    //    var random = Random.Range(0, foodSOs.Count);
-    //    return ((ICloneable<Food>)foodSOs[random].Food).CloneSelf();
-
-    //}
 
     public bool VerifyLevel()
     {

@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class GameLog : ICloneable<GameLog>
 {
-    [SerializeField] List<Turn> gameTurns = new List<Turn>();
+    [SerializeField] List<Turn> gameTurns = new();
 
     public List<Turn> GameTurns { get => gameTurns; }
 
@@ -20,6 +21,6 @@ public class GameLog : ICloneable<GameLog>
     }
     public override string ToString()
     {
-        return $"{{{nameof(GameTurns)}={GameTurns}}}";
+        return $"{JsonConvert.SerializeObject(GameTurns)}";
     }
 }

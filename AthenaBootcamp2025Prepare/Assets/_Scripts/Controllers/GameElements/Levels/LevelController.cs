@@ -47,6 +47,7 @@ public class LevelController : MonoBehaviour
             SnakeCoords = level.SnakeStartCoords,
             SnakeDirection = level.SnakeStartDirection,
         };
+
         currentTurn.GenerateFood();
         gameLog.Reset();
         gameLog.GameTurns.Add(currentTurn);
@@ -299,7 +300,7 @@ public class LevelController : MonoBehaviour
     #region State Ending
     protected virtual void EnterState_Ending()
     {
-
+        JsonHelper.SaveData(gameLog, "D:\\Test\\GameLogTest");
     }
     protected virtual void UpdateState_Ending()
     {
