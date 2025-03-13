@@ -3,10 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class Coordinate : ICloneable<Coordinate>
 {
     [SerializeField] int x;
     [SerializeField] int y;
+
+    public Coordinate(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
 
     public int X { get => x; set => x = value; }
     public int Y { get => y; set => y = value; }
@@ -28,5 +35,10 @@ public class Coordinate : ICloneable<Coordinate>
     public override int GetHashCode()
     {
         return HashCode.Combine(X, Y);
+    }
+
+    public override string ToString()
+    {
+        return $"({x}, {y})";
     }
 }

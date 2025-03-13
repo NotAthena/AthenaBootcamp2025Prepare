@@ -1,9 +1,20 @@
-public enum SampleEnum
+public enum SampleState
 {
     Default,
 }
-<<<<<<< Updated upstream
-=======
+
+public enum LevelState
+{
+    Pending,
+    Playing,
+    Ending
+}
+
+public enum FoodSize
+{
+    Normal = 0,
+    Big
+}
 
 public enum GameEvent
 {
@@ -12,4 +23,26 @@ public enum GameEvent
     SnakeTurnLeft,
     SnakeTurnRight,
 }
->>>>>>> Stashed changes
+
+public enum Difficulty
+{
+    Default,
+    Easy,
+    Medium,
+    Hard
+}
+
+public enum GameStatus
+{
+    Ok,
+    SnakeEat,
+    SnakeDead,
+}
+
+public enum Direction
+{
+    Up,
+    Down,
+    Left,
+    Right
+}
