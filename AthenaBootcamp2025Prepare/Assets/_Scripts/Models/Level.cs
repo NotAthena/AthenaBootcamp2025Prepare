@@ -14,7 +14,7 @@ public class Level : ICloneable<Level>
     [Description("Turn per second. \n Ex: if snakeSpeed equal 2, delta time between every turn is 0.5 second")]
     [SerializeField] float snakeSpeed;
     [SerializeField] List<Coordinate> wallCoords;
-    //[SerializeField] List<FoodSO> foodSOs;
+    [SerializeField] List<FoodSO> foodSOs;
 
     public Difficulty Difficulty { get => difficulty; set => difficulty = value; }
     public int Width { get => width; set => width = value; }
@@ -23,6 +23,7 @@ public class Level : ICloneable<Level>
     public Direction SnakeStartDirection { get => snakeStartDirection; set => snakeStartDirection = value; }
     public float SnakeSpeed { get => snakeSpeed; set => snakeSpeed = value; }
     public List<Coordinate> WallCoords { get => wallCoords; set => wallCoords = value; }
+    public List<FoodSO> FoodSOs { get => foodSOs; set => foodSOs = value; }
 
     //public Food GetFood(int index)
     //{

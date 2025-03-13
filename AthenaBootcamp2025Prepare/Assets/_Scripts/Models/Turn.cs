@@ -15,8 +15,11 @@ public class Turn : ICloneable<Turn>
     [SerializeField] List<Coordinate> snakeCoords = new(); //index at 0 is Head, at last is Tail
     [SerializeField] Direction snakeDirection;
     [SerializeField] Food food;
+    [SerializeField] int foodEatenCounter = 1;
+    [SerializeField] int score;
 
 
+    public int TurnIndex { get => turnIndex; set => turnIndex = value; }
     public Level LevelInfo { get => levelInfo; set => levelInfo = value; }
     public List<GameEvent> GameEvents { get => gameEvents; set => gameEvents = value; }
     public int[,] Matrix { get => GenerateMatrix(); set => matrix = value; }
@@ -24,6 +27,8 @@ public class Turn : ICloneable<Turn>
     public Direction SnakeDirection { get => snakeDirection; set => snakeDirection = value; }
     public Food Food { get => food; set => food = value; }
     public string MatrixToString { get => GetMatrixString(); }
+    public int Score { get => score; set => score = value; }
+    public int FoodEatenCounter { get => foodEatenCounter; }
 
     public static readonly int snakeHeadSign = 1;
     public static readonly int snakeBodySign = 2;
@@ -39,17 +44,11 @@ public class Turn : ICloneable<Turn>
             matrix[wallCoord.X, wallCoord.Y] = wallSign;
         }
 
-        for (int i = 0; i < snakeCoords.Count; i++)
+        for (int i = 1; i < snakeCoords.Count; i++)
         {
-            if (i == 0)
-            {
-                matrix[snakeCoords[i].X, snakeCoords[i].Y] = snakeHeadSign;
-            }
-            else
-            {
-                matrix[snakeCoords[i].X, snakeCoords[i].Y] = snakeBodySign;
-            }
+            matrix[snakeCoords[i].X, snakeCoords[i].Y] = snakeBodySign;
         }
+        matrix[snakeCoords[0].X, snakeCoords[0].Y] = snakeHeadSign;
 
         if (Food != null) matrix[Food.Coordinate.X, Food.Coordinate.Y] = foodSign;
         return matrix;
@@ -121,15 +120,32 @@ public class Turn : ICloneable<Turn>
             }
         }
         int foodCoord = Random.Range(0, availableCoords.Count);
-        int foodSize = 0;
-        if (turnIndex > 0 && turnIndex % 5 == 0) { foodSize = 2; }
-        Food = new()
+
+        if (FoodEatenCounter > 0 && FoodEatenCounter % 5 == 0)
         {
-            Size = (FoodSize)foodSize,
-            Coordinate = availableCoords[foodCoord],
-        };
+            Food = ((ICloneable<Food>)levelInfo.FoodSOs[1].Food).CloneSelf();
+        }
+        else
+        {
+            Food = ((ICloneable<Food>)levelInfo.FoodSOs[0].Food).CloneSelf();
+        }
+        Food.Coordinate = availableCoords[foodCoord];
+
+        //int foodSize = 0;
+        //if (turnIndex > 0 && turnIndex % 5 == 0) { foodSize = 2; }
+        //Food = new()
+        //{
+        //    Size = (FoodSize)foodSize,
+        //    Coordinate = availableCoords[foodCoord],
+        //};
         GenerateMatrix();
         return Food;
+    }
+
+    public void AddScore(int addedScore)
+    {
+        score += addedScore;
+        foodEatenCounter++;
     }
 
     public override string ToString()

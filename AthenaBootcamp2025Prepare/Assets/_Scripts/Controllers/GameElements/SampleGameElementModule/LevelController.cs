@@ -9,7 +9,8 @@ public class LevelController : MonoBehaviour
     [SerializeField] private LevelSO levelSO;
 
     [Header("Game Object assign")]
-    [SerializeField] private TMP_Text console;
+    [SerializeField] private TMP_Text matrixView;
+    [SerializeField] private TMP_Text scoreView;
 
     [Header("Runtime Parameter")]
     [SerializeField] private Level level;
@@ -24,7 +25,7 @@ public class LevelController : MonoBehaviour
     {
         level = ((ICloneable<Level>)levelSO.Level).CloneSelf();
         GenerateMap();
-        console.SetText(currentTurn.MatrixToString);
+        matrixView.SetText(currentTurn.MatrixToString);
     }
 
     private void OnDisable()
@@ -46,8 +47,7 @@ public class LevelController : MonoBehaviour
             SnakeCoords = level.SnakeStartCoords,
             SnakeDirection = level.SnakeStartDirection,
         };
-        var test = currentTurn.GenerateFood();
-        Debug.Log(test);
+        currentTurn.GenerateFood();
         gameLog.Reset();
         gameLog.GameTurns.Add(currentTurn);
     }
@@ -57,10 +57,14 @@ public class LevelController : MonoBehaviour
         yield return new WaitForSeconds(1f / level.SnakeSpeed);
         MoveSnake_Playing();
         gameLog.Add(currentTurn);
+        currentTurn.TurnIndex = gameLog.GameTurns.Count;
         currentTurn = ((ICloneable<Turn>)currentTurn).CloneSelf();
         waitAndDoTurnCoroutines.Add(StartCoroutine(WaitAndDoTurn()));
-        console.SetText(currentTurn.MatrixToString);
 
+        // View Controller Here
+        matrixView.SetText(currentTurn.MatrixToString);
+        scoreView.SetText(currentTurn.Score.ToString());
+        // ====================
     }
 
 
@@ -177,7 +181,6 @@ public class LevelController : MonoBehaviour
 
     protected void InputCheck_Playing()
     {
-        Debug.Log(isAbleToInput);
         if (!isAbleToInput) return;
 
         if (Input.GetKey(KeyCode.UpArrow))
@@ -199,7 +202,7 @@ public class LevelController : MonoBehaviour
         {
             ChangeSnakeDirection(Direction.Right);
             StartCoroutine(WaitInputCooldown());
-        } 
+        }
     }
 
     protected IEnumerator WaitInputCooldown()
@@ -282,6 +285,8 @@ public class LevelController : MonoBehaviour
                         break;
                 }
                 currentTurn.SnakeCoords[0] = new Coordinate(x, y);
+                currentTurn.AddScore(currentTurn.Food.Score);
+                Debug.Log(currentTurn.TurnIndex + " | " + currentTurn.FoodEatenCounter + " | " + currentTurn.Food.Size + " | " + currentTurn.Food.Score);
                 currentTurn.GenerateFood();
                 break;
             case GameStatus.SnakeDead:

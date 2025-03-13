@@ -30,3 +30,6 @@ MonoBehaviour:
       y: 0
     - x: 0
       y: 1
+    foodSOs:
+    - {fileID: 11400000, guid: 40ffd70e393866c46b61bc5f30b98154, type: 2}
+    - {fileID: 11400000, guid: 744bc7beb5f2e744685548fa33c8e79a, type: 2}
