@@ -13,6 +13,16 @@ public class Food : ICloneable<Food>
     public int Score { get => score; set => score = value; }
     public Coordinate Coordinate { get => coordinate; set => coordinate = value; }
 
+    public override bool Equals(object obj)
+    {
+        return size == ((Food)obj).size && score == ((Food)obj).score && coordinate == ((Food)obj).coordinate;
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
+
     public override string ToString()
     {
         return $"{{{nameof(Size)}={Size.ToString()}, " +

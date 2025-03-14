@@ -41,3 +41,21 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Ground
+    uniqueID: 1943308815
+    locked: 0
+  - name: SnakeBody
+    uniqueID: 979842845
+    locked: 0
+  - name: SnakeTail
+    uniqueID: 3678716695
+    locked: 0
+  - name: SnakeHead
+    uniqueID: 3667018551
+    locked: 0
+  - name: Obstancle
+    uniqueID: 4043691247
+    locked: 0
+  - name: Food
+    uniqueID: 2469989357
+    locked: 0

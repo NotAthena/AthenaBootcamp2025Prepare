@@ -1204,7 +1204,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &893062630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1804,6 +1804,108 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1095725767}
   m_CullTransparentMesh: 1
+--- !u!1 &1167543765
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1167543766}
+  - component: {fileID: 1167543767}
+  m_Layer: 0
+  m_Name: LevelView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1167543766
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167543765}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.92, y: 3.73, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1167543767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167543765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2355714d6157a0a4b9f9b1815c55b047, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cellPrefab: {fileID: 1809032763484960227, guid: ad7f165872e200c4289c3efc4196ca62, type: 3}
+  wallPrefab: {fileID: 1483763861437126720, guid: 5011889032b60ca44b65c3c9c7570d8e, type: 3}
+  snakeHeadPrefab: {fileID: 1175201420996581905, guid: ec1fedb65ba1cbb4daec0a68b065e627, type: 3}
+  snakeBodyPrefab: {fileID: 5909766318447269470, guid: 362659c36fc6f9047b11ecd5a8f5cf65, type: 3}
+  snakeTailPrefab: {fileID: 3200221107834943699, guid: 7033e8b83eae1254eb779525b370342b, type: 3}
+  foodPrefabs:
+  - {fileID: 4064493613336657705, guid: 0e837bda30666fe4eb996b89d85aa287, type: 3}
+  bigFoodPrefabs: []
+  snakeGameObject: []
+  cellEdgeLength: 0.5
+  previousTurn:
+    turnIndex: 0
+    levelInfo:
+      difficulty: 0
+      width: 0
+      height: 0
+      snakeStartCoords: []
+      snakeStartDirection: 0
+      snakeSpeed: 0
+      wallCoords: []
+      foodSOs: []
+    gameEvents: 
+    snakeCoords: []
+    snakeDirection: 0
+    food:
+      size: 0
+      score: 0
+      coordinate:
+        x: 0
+        y: 0
+    foodEatenCounter: 1
+    score: 0
+  currentTurn:
+    turnIndex: 0
+    levelInfo:
+      difficulty: 0
+      width: 0
+      height: 0
+      snakeStartCoords: []
+      snakeStartDirection: 0
+      snakeSpeed: 0
+      wallCoords: []
+      foodSOs: []
+    gameEvents: 
+    snakeCoords: []
+    snakeDirection: 0
+    food:
+      size: 0
+      score: 0
+      coordinate:
+        x: 0
+        y: 0
+    foodEatenCounter: 1
+    score: 0
+  currentSnake: []
+  targetSnake: []
+  walls: []
+  currentFood: {fileID: 0}
 --- !u!1 &1196366977
 GameObject:
   m_ObjectHideFlags: 0
@@ -2827,4 +2929,5 @@ SceneRoots:
   - {fileID: 893062631}
   - {fileID: 1504900611}
   - {fileID: 1492801545}
+  - {fileID: 1167543766}
   - {fileID: 1409839120}

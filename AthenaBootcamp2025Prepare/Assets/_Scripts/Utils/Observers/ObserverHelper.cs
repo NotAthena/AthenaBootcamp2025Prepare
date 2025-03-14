@@ -10,7 +10,7 @@ public class ObserverHelper : MonoBehaviour
 
     public static void RegisterListener(string name, Action<object[]> callback)
     {
-        Debug.Log(callback);
+        //Debug.Log(callback);
         if (!Listeners.ContainsKey(name))
         {
             Listeners.Add(name, new List<Action<object[]>>());
@@ -34,7 +34,7 @@ public class ObserverHelper : MonoBehaviour
 
     public static void Notify(string name, params object[] data)
     {
-        Debug.Log(data);
+        //Debug.Log(data[0]);
         if (!Listeners.ContainsKey(name))
         {
             return;

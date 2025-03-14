@@ -95,6 +95,17 @@ public class ReplayController : MonoBehaviour
             scoreView.SetText(gameLog.GameTurns[currentTurnIndex].Score.ToString());
             // ====================
 
+            //Notify
+            if (currentTurnIndex == 0)
+            {
+                ObserverHelper.Notify(ObserverConstants.START_PLAYING, gameLog.GameTurns[currentTurnIndex]);
+            }
+            else
+            {
+                ObserverHelper.Notify(ObserverConstants.SNAKE_MOVE, gameLog.GameTurns[currentTurnIndex]);
+            }
+            //===
+
             currentTurnIndex++;
             waitAndDoTurnCoroutines.Add(StartCoroutine(WaitAndDoTurn()));
         }

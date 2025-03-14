@@ -56,18 +56,31 @@ public class LevelController : MonoBehaviour
     IEnumerator WaitAndDoTurn()
     {
         yield return new WaitForSeconds(1f / level.SnakeSpeed);
-        MoveSnake_Playing();
         gameLog.Add(currentTurn);
-        currentTurn.TurnIndex = gameLog.GameTurns.Count;
+        currentTurn.TurnIndex = gameLog.GameTurns.Count - 1;
         currentTurn = ((ICloneable<Turn>)currentTurn).CloneSelf();
-        waitAndDoTurnCoroutines.Add(StartCoroutine(WaitAndDoTurn()));
 
         // View Controller Here
         matrixView.SetText(currentTurn.MatrixToString);
         scoreView.SetText(currentTurn.Score.ToString());
         // ====================
-    }
 
+        //Notify
+        if (currentTurn.TurnIndex == 1)
+        {
+            ObserverHelper.Notify(ObserverConstants.START_PLAYING, gameLog.GameTurns[currentTurn.TurnIndex]);
+        }
+        else
+        {
+            ObserverHelper.Notify(ObserverConstants.SNAKE_MOVE, gameLog.GameTurns[currentTurn.TurnIndex]);
+           
+        }
+        //===
+
+        MoveSnake_Playing();
+
+        waitAndDoTurnCoroutines.Add(StartCoroutine(WaitAndDoTurn()));
+    }
 
 
     private void ChangeSnakeDirection(Direction incomingDirection)
