@@ -6,30 +6,57 @@ using UnityEngine;
 public class ReplayController : MonoBehaviour
 {
     [Header("Data")]
-    [SerializeField] string filePath; //TO DO: Add Read from list file in Application.persistentDataPath
+    [SerializeField] string fileName = string.Empty; //TO DO: Add Read from list file in Application.persistentDataPath
 
 
     [Header("Game Object assign")]
     [SerializeField] private TMP_Text matrixView;
     [SerializeField] private TMP_Text scoreView;
+    [SerializeField] private TMP_Dropdown saveListDropdown;
 
     [Header("Runtime Parameter")]
     [SerializeField] GameLog gameLog;
     [SerializeField] int currentTurnIndex;
     [SerializeField] private ReplayState currentState;
+    List<string> fileNames = new();
 
     private List<Coroutine> waitAndDoTurnCoroutines = new();
 
+    private void Awake()
+    {
+        //saveListDropdown.onValueChanged.AddListener((x) => OnDropDownValueChange());
+    }
+
     private void OnEnable()
     {
-        gameLog = JsonHelper.ReadData<GameLog>(filePath);
+        fileNames = GameSaveManager.GetSaveNameList();
+        //gameLog = JsonHelper.ReadData<GameLog>(filePath);
+        saveListDropdown.ClearOptions();
+        foreach (var fileName in fileNames)
+        {
+            saveListDropdown.options.Add(new() { text = fileName });
+        }
+        //StartCoroutine(WaitLoadFileList());
     }
+
     private void Update()
     {
         UpdateOnState();
     }
     public void Play()
     {
+        if (string.IsNullOrEmpty(fileName))
+        {
+            fileName = saveListDropdown.options[saveListDropdown.value].text;
+            gameLog = GameSaveManager.Load(fileName);
+            Restart();
+        }
+        else if (fileName != saveListDropdown.options[saveListDropdown.value].text)
+        {
+            fileName = saveListDropdown.options[saveListDropdown.value].text;
+            gameLog = GameSaveManager.Load(fileName);
+            Restart();
+        }
         StartCoroutine(WaitAndDoTurn());
     }
 
@@ -43,9 +70,18 @@ public class ReplayController : MonoBehaviour
     {
         foreach (var coroutine in waitAndDoTurnCoroutines)
         {
-            StopCoroutine(coroutine);
+            if (coroutine != null)
+            {
+                StopCoroutine(coroutine);
+            }
         }
         waitAndDoTurnCoroutines.Clear();
+    }
+
+    public void OnDropDownValueChange()
+    {
+        fileName = saveListDropdown.options[saveListDropdown.value].text;
+
     }
 
     IEnumerator WaitAndDoTurn()
@@ -53,7 +89,6 @@ public class ReplayController : MonoBehaviour
         if (currentTurnIndex < gameLog.GameTurns.Count)
         {
             yield return new WaitForSeconds(1f / gameLog.GameTurns[currentTurnIndex].LevelInfo.SnakeSpeed);
-            waitAndDoTurnCoroutines.Add(StartCoroutine(WaitAndDoTurn()));
 
             // View Controller Here
             matrixView.SetText(gameLog.GameTurns[currentTurnIndex].MatrixToString);
@@ -61,6 +96,7 @@ public class ReplayController : MonoBehaviour
             // ====================
 
             currentTurnIndex++;
+            waitAndDoTurnCoroutines.Add(StartCoroutine(WaitAndDoTurn()));
         }
     }
 

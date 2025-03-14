@@ -300,7 +300,8 @@ public class LevelController : MonoBehaviour
     #region State Ending
     protected virtual void EnterState_Ending()
     {
-        JsonHelper.SaveData(gameLog, "D:\\Test\\GameLogTest");
+        GameSaveManager.Save(gameLog);
+        //JsonHelper.SaveData(gameLog, "D:\\Test\\GameLogTest");
     }
     protected virtual void UpdateState_Ending()
     {

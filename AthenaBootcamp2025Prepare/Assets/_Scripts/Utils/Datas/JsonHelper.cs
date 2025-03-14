@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEngine;
 
 
 public class JsonHelper
@@ -15,16 +16,22 @@ public class JsonHelper
         string jsonRead;
         try
         {
+            string extension = Path.GetExtension(filePath);
+            if (string.IsNullOrEmpty(extension))
+            {
+                filePath += ".txt";
+            }
             jsonRead = System.IO.File.ReadAllText(filePath);
             return JsonConvert.DeserializeObject<T>(jsonRead);
         }
-        catch (FileNotFoundException)
+        catch (Exception ex)
         {
+            Debug.LogError($"Error reading file: {ex.Message}");
             return default;
         }
     }
 
-    public static void SaveData(Object saveObject, string filePath)
+    public static void SaveData(System.Object saveObject, string filePath)
     {
         string json = JsonConvert.SerializeObject(saveObject, Formatting.Indented);
 
@@ -48,5 +55,7 @@ public class JsonHelper
         {
             sw.WriteLine(json);
         }
+
+        Debug.Log($"Save file success at: {filePath}");
     }
 }
