@@ -1,16 +1,23 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
 
     private static AudioManager instance;
-    [SerializeField] private List<AudioClip> audioClipList = new();
-    [SerializeField] private List<AudioSource> audioSourceList = new();
-    [SerializeField] private List<string> audioNameList = new();
+
+
+    [Header("Data")]
+    [SerializeField] private float loadingTimeOut = 1f;
+    [SerializeField] private List<AudioData> audioDatas = new();
+
 
     public static AudioManager Instance { get => instance; }
+
 
     private void Awake()
     {
@@ -31,48 +38,87 @@ public class AudioManager : MonoBehaviour
 
     private void LoadAudioList()
     {
-        audioNameList.Clear();
-        List<AudioSource> audioSources = GetComponents<AudioSource>().ToList();
-        foreach (AudioSource audioSource in audioSources)
+        foreach (AudioData audioData in audioDatas)
         {
-            audioSource.clip = null;
-        }
-        for (int i = 0; i < audioClipList.Count; i++)
-        {
-            if (i < audioSourceList.Count)
+            if (audioData.AudioSource == null)
             {
-                Debug.Log(i);
-                Debug.Log(audioClipList[i]);
-                Debug.Log(audioSourceList[i]);
-                audioSourceList[i].clip = audioClipList[i];
-                audioNameList.Add(audioClipList[i].name);
+                audioData.AudioSource = gameObject.AddComponent<AudioSource>();
             }
-            else
-            {
-                AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-                audioSource.clip = audioClipList[i];
-                audioSourceList.Add(audioSource);
-                audioNameList.Add(audioClipList[i].name);
-            }
+            audioData.AudioSource.clip = audioData.Clip;
+            audioData.AudioSource.volume = audioData.Volume;
+            audioData.AudioName = audioData.Clip.name;
         }
     }
 
     public void PlayAudio(string audioName)
     {
-        try
+        var audioData = audioDatas.FirstOrDefault((audioData) => audioData.AudioName.Equals(audioName));
+        if (audioData == null)
         {
-            //TO DO: Write function to ensure audio is ready before playing
-            audioSourceList[audioNameList.IndexOf(audioName)].Play();
+            Debug.Log("Audio not found!");
+            return;
         }
-        catch { }
+        if (audioData.AudioSource.clip.loadState == AudioDataLoadState.Loaded)
+        {
+            audioData.AudioSource.Play();
+        }
+        else
+        {
+            StartCoroutine(PlayAudioCoroutine(audioData));
+        }
     }
 
-    public void StopAudio(string audioName)
+    IEnumerator PlayAudioCoroutine(AudioData audioData)
+    {
+        float delayLoadingTime = 0f;
+        audioData.AudioSource.clip.LoadAudioData();
+        while (!audioData.AudioSource.clip.loadState.Equals(AudioDataLoadState.Loaded))
+        {
+            if (delayLoadingTime > loadingTimeOut)
+            {
+                Debug.Log($"Can not load audio {audioData.AudioName}!");
+                break;
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.01f);
+                delayLoadingTime += 0.01f;
+                Debug.Log(audioData.AudioSource.clip.loadState + " |" + delayLoadingTime + " | " + loadingTimeOut);
+                
+            }
+        }
+        if (audioData.AudioSource.clip.loadState.Equals(AudioDataLoadState.Loaded))
+        {
+            audioData.AudioSource.Play();
+            audioData.AudioSource.time = delayLoadingTime;
+        }
+    }
+
+    public void StopAudio(AudioData audioData)
     {
         try
         {
-            audioSourceList[audioNameList.IndexOf(audioName)].Stop();
+            audioData.AudioSource.Stop();
         }
-        catch { }
+        catch
+        {
+            Debug.Log($"Can not stop audio {audioData.AudioName}!");
+        }
     }
+
+}
+
+[Serializable]
+public class AudioData
+{
+    [SerializeField] private AudioClip clip;
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float volume;
+    [SerializeField]AudioSource audioSource;
+    [SerializeField] string audioName;
+    public AudioClip Clip { get => clip; set => clip = value; }
+    public float Volume { get => volume; set => volume = value; }
+    public AudioSource AudioSource { get => audioSource; set => audioSource = value; }
+    public string AudioName { get => audioName; set => audioName = value; }
+
 }
