@@ -53,6 +53,11 @@ public class AudioManager : MonoBehaviour
     public void PlayAudio(string audioName)
     {
         var audioData = audioDatas.FirstOrDefault((audioData) => audioData.AudioName.Equals(audioName));
+        if (audioData == null)
+        {
+            Debug.Log("Audio not found!");
+            return;
+        }
         if (audioData.AudioSource.clip.loadState == AudioDataLoadState.Loaded)
         {
             audioData.AudioSource.Play();
@@ -84,7 +89,6 @@ public class AudioManager : MonoBehaviour
         }
         if (audioData.AudioSource.clip.loadState.Equals(AudioDataLoadState.Loaded))
         {
-            Debug.Log($"Load success: {audioData.AudioName}!");
             audioData.AudioSource.Play();
             audioData.AudioSource.time = delayLoadingTime;
         }
